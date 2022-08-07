@@ -1,5 +1,5 @@
 import type { Direction, ObjectPosition } from '../types'
-import type { Setter } from 'solid-js'
+import type { Accessor, Setter } from 'solid-js'
 
 import { Arrow } from '../icons/Arrow'
 
@@ -7,12 +7,13 @@ export function PositioningButtons({
   imageObjectPosition,
   setImageObjectPosition,
 }: {
-  imageObjectPosition: ObjectPosition
+  imageObjectPosition: Accessor<ObjectPosition>
   setImageObjectPosition: Setter<ObjectPosition>
 }) {
   function handleImageRotation(direction: Direction) {
+    console.log(imageObjectPosition())
     if (direction === 'left') {
-      if (imageObjectPosition === 'object-right') {
+      if (imageObjectPosition() === 'object-right') {
         setImageObjectPosition('object-center')
         return
       }
@@ -21,7 +22,7 @@ export function PositioningButtons({
     }
 
     if (direction === 'right') {
-      if (imageObjectPosition === 'object-left') {
+      if (imageObjectPosition() === 'object-left') {
         setImageObjectPosition('object-center')
         return
       }
@@ -30,7 +31,7 @@ export function PositioningButtons({
     }
 
     if (direction === 'top') {
-      if (imageObjectPosition === 'object-bottom') {
+      if (imageObjectPosition() === 'object-bottom') {
         setImageObjectPosition('object-center')
         return
       }
@@ -39,7 +40,7 @@ export function PositioningButtons({
     }
 
     if (direction === 'bottom') {
-      if (imageObjectPosition === 'object-top') {
+      if (imageObjectPosition() === 'object-top') {
         setImageObjectPosition('object-center')
         return
       }
