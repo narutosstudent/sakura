@@ -20,6 +20,28 @@ export const App = () => {
     setImageUrl(newImageUrl)
   }
 
+  function onRotationChange() {
+    if (imageRotation() === negativeRotationValues.zero) {
+      setImageRotation(negativeRotationValues.ninthy)
+      return
+    }
+
+    if (imageRotation() === negativeRotationValues.ninthy) {
+      setImageRotation(negativeRotationValues.oneEighty)
+      return
+    }
+
+    if (imageRotation() === negativeRotationValues.oneEighty) {
+      setImageRotation(negativeRotationValues.twoSeventy)
+      return
+    }
+
+    if (imageRotation() === negativeRotationValues.twoSeventy) {
+      setImageRotation(negativeRotationValues.zero)
+      return
+    }
+  }
+
   return (
     <main class="flex h-full w-full flex-col items-center bg-pink-100">
       <h1 class="mt-10 text-8xl font-medium text-gray-800">Sakura</h1>
@@ -27,7 +49,7 @@ export const App = () => {
         <Switch>
           <Match when={imageUrl()}>
             <div class="flex h-full w-full flex-col items-center">
-              <div class="relative h-[300px] w-[600px]">
+              <div class="relative h-[300px] w-[600px] overflow-hidden">
                 <img
                   class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 ${imageObjectPosition()} ${imageRotation()}`}
                   src={imageUrl()}
@@ -42,6 +64,7 @@ export const App = () => {
                 class="mt-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gray-800 shadow-sm shadow-gray-700"
                 aria-label="Rotate image towards the left by 90 degrees."
                 type="button"
+                onClick={onRotationChange}
               >
                 <Rotate />
               </button>
