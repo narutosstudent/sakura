@@ -1,39 +1,16 @@
+import type {
+  Direction,
+  FileInputEvent,
+  ObjectPosition,
+  ValueOf,
+} from './types'
+
 import { createSignal, Match, Switch } from 'solid-js'
 
+import { negativeRotationValues } from './constants'
 import { Arrow } from './icons/Arrow'
 import { Rotate } from './icons/Rotate'
-
-type ValueOf<Type> = Type[keyof Type]
-
-type FileInputEvent = Event & {
-  currentTarget: HTMLInputElement
-  target: HTMLInputElement
-}
-
-export type Direction = 'left' | 'right' | 'bottom' | 'top'
-
-type ObjectPosition =
-  | 'object-center'
-  | 'object-right'
-  | 'object-top'
-  | 'object-left'
-  | 'object-bottom'
-
-function getImageUrl(event: FileInputEvent) {
-  const file = event.target.files ? event.target.files[0] : null
-  if (!file) {
-    throw new Error('You must upload an image...')
-  }
-
-  return window.URL.createObjectURL(file)
-}
-
-const negativeRotationValues = {
-  zero: 'rotate-0',
-  ninthy: '-rotate-90',
-  oneEighty: '-rotate-180',
-  twoSeventy: '-rotate-[270deg]',
-} as const
+import { getImageUrl } from './utils'
 
 export const App = () => {
   const [imageUrl, setImageUrl] = createSignal('src/levi.jpg')
@@ -48,7 +25,7 @@ export const App = () => {
     setImageUrl(newImageUrl)
   }
 
-  function onButtonPositionClick(direction: Direction) {
+  function handleImageRotation(direction: Direction) {
     if (direction === 'left') {
       if (imageObjectPosition() === 'object-right') {
         setImageObjectPosition('object-center')
@@ -104,7 +81,7 @@ export const App = () => {
                   name="left"
                   class="center-vertically postioning-buttons absolute left-2"
                   aria-label="Move Image towards left"
-                  onClick={() => onButtonPositionClick('left')}
+                  onClick={() => handleImageRotation('left')}
                 >
                   <Arrow direction="left" />
                 </button>
@@ -114,7 +91,7 @@ export const App = () => {
                   name="top"
                   class="center-horizontally postioning-buttons absolute top-2"
                   aria-label="Move Image towards top"
-                  onClick={() => onButtonPositionClick('top')}
+                  onClick={() => handleImageRotation('top')}
                 >
                   <Arrow direction="top" />
                 </button>
@@ -124,7 +101,7 @@ export const App = () => {
                   name="right"
                   class="center-vertically postioning-buttons absolute right-2"
                   aria-label="Move Image towards right"
-                  onClick={() => onButtonPositionClick('right')}
+                  onClick={() => handleImageRotation('right')}
                 >
                   <Arrow direction="right" />
                 </button>
@@ -134,7 +111,7 @@ export const App = () => {
                   name="bottom"
                   class="center-horizontally postioning-buttons bottom-2"
                   aria-label="Move Image towards bottom"
-                  onClick={() => onButtonPositionClick('bottom')}
+                  onClick={() => handleImageRotation('bottom')}
                 >
                   <Arrow direction="bottom" />
                 </button>
