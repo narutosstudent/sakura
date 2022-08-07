@@ -72,7 +72,9 @@ export const App = () => {
                   <Rotate />
                 </button>
                 <div class="flex items-center [column-gap:20px]">
-                  <label for="grayscale">Grayscale: </label>
+                  <label for="grayscale" class="font-medium">
+                    Grayscale: {grayscaleValue()}%{' '}
+                  </label>
                   <input
                     type="range"
                     id="grayscale"
@@ -88,7 +90,9 @@ export const App = () => {
                   />
                 </div>
                 <div class="flex items-center [column-gap:20px]">
-                  <label for="contrast">Contrast: </label>
+                  <label for="contrast" class="font-medium">
+                    Contrast: {contrastValue()}{' '}
+                  </label>
                   <input
                     type="range"
                     id="contrast"
