@@ -50,7 +50,7 @@ export const App = () => {
       <div class="mt-20 flex min-h-[400px] min-w-[700px] flex-col items-center">
         <Switch>
           <Match when={imageUrl()}>
-            <div class="flex h-full w-full flex-col items-center">
+            <div class="relative flex h-full w-full flex-col items-center">
               <div class="relative h-[300px] w-[600px] overflow-hidden">
                 <img
                   class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 grayscale-[${grayscaleValue()}%] contrast-${contrastValue()} ${imageObjectPosition()} ${imageRotation()}`}
@@ -62,18 +62,19 @@ export const App = () => {
                   setImageObjectPosition={setImageObjectPosition}
                 />
               </div>
-              <div class="mt-auto flex w-full items-center justify-evenly">
-                <button
-                  class="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-800 shadow-sm shadow-gray-700"
-                  aria-label="Rotate image towards the left by 90 degrees."
-                  type="button"
-                  onClick={onRotationChange}
-                >
-                  <Rotate />
-                </button>
-                <div class="flex items-center [column-gap:20px]">
+
+              <button
+                class="absolute top-0 -right-2 flex h-10 w-10 items-center justify-center rounded-xl bg-gray-800 shadow-sm shadow-gray-700"
+                aria-label="Rotate image towards the left by 90 degrees."
+                type="button"
+                onClick={onRotationChange}
+              >
+                <Rotate />
+              </button>
+              <div class="mt-auto flex w-full flex-wrap items-center justify-between [column-gap:20px]">
+                <div class="flex items-center [column-gap:10px]">
                   <label for="grayscale" class="font-medium">
-                    Grayscale: {grayscaleValue()}%{' '}
+                    Grayscale: {grayscaleValue()}%
                   </label>
                   <input
                     type="range"
@@ -89,9 +90,10 @@ export const App = () => {
                     }
                   />
                 </div>
-                <div class="flex items-center [column-gap:20px]">
+
+                <div class="flex items-center [column-gap:10px]">
                   <label for="contrast" class="font-medium">
-                    Contrast: {contrastValue()}{' '}
+                    Contrast: {contrastValue()}
                   </label>
                   <input
                     type="range"
