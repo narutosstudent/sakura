@@ -14,7 +14,7 @@ export const App = () => {
   const [imageRotation, setImageRotation] = createSignal<
     ValueOf<typeof negativeRotationValues>
   >(negativeRotationValues.zero)
-  const [blurValue, setBlurValue] = createSignal(0)
+  const [contrastValue, setContrastValue] = createSignal(100)
 
   function onFileChange(event: FileInputEvent) {
     const newImageUrl = getImageUrl(event)
@@ -43,10 +43,6 @@ export const App = () => {
     }
   }
 
-  createEffect(() => {
-    console.log(blurValue())
-  })
-
   return (
     <main class="flex h-full w-full flex-col items-center bg-pink-100">
       <h1 class="mt-10 text-8xl font-medium text-gray-800">Sakura</h1>
@@ -56,8 +52,7 @@ export const App = () => {
             <div class="flex h-full w-full flex-col items-center">
               <div class="relative h-[300px] w-[600px] overflow-hidden">
                 <img
-                  class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 ${imageObjectPosition()} ${imageRotation()}`}
-                  style={{ filter: `blur: (${blurValue()}px);` }}
+                  class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 contrast-${contrastValue()} ${imageObjectPosition()} ${imageRotation()}`}
                   src={imageUrl()}
                   alt=""
                 />
@@ -76,19 +71,19 @@ export const App = () => {
                   <Rotate />
                 </button>
                 <div class="flex items-center [column-gap:20px]">
-                  <label for="blur">Blur: </label>
+                  <label for="contrast">Contrast: </label>
                   <input
                     type="range"
-                    id="blur"
+                    id="contrast"
                     min="0"
-                    max="100"
-                    value={blurValue()}
+                    max="200"
+                    step="50"
+                    value={contrastValue()}
                     onChange={(event) =>
-                      setBlurValue(
+                      setContrastValue(
                         Number((event.target as HTMLInputElement).value)
                       )
                     }
-                    step="1"
                   />
                 </div>
               </div>
