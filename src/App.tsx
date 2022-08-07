@@ -1,6 +1,6 @@
 import type { FileInputEvent, ObjectPosition, ValueOf } from './types'
 
-import { createEffect, createSignal, Match, Switch } from 'solid-js'
+import { createSignal, Match, Switch } from 'solid-js'
 
 import { PositioningButtons } from './components/PositioningButtons'
 import { negativeRotationValues } from './constants'
@@ -15,6 +15,7 @@ export const App = () => {
     ValueOf<typeof negativeRotationValues>
   >(negativeRotationValues.zero)
   const [contrastValue, setContrastValue] = createSignal(100)
+  const [grayscaleValue, setGrayscaleValue] = createSignal(0)
 
   function onFileChange(event: FileInputEvent) {
     const newImageUrl = getImageUrl(event)
@@ -52,7 +53,7 @@ export const App = () => {
             <div class="flex h-full w-full flex-col items-center">
               <div class="relative h-[300px] w-[600px] overflow-hidden">
                 <img
-                  class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 contrast-${contrastValue()} ${imageObjectPosition()} ${imageRotation()}`}
+                  class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 grayscale-[${grayscaleValue()}%] contrast-${contrastValue()} ${imageObjectPosition()} ${imageRotation()}`}
                   src={imageUrl()}
                   alt=""
                 />
@@ -70,6 +71,22 @@ export const App = () => {
                 >
                   <Rotate />
                 </button>
+                <div class="flex items-center [column-gap:20px]">
+                  <label for="grayscale">Grayscale: </label>
+                  <input
+                    type="range"
+                    id="grayscale"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={grayscaleValue()}
+                    onChange={(event) =>
+                      setGrayscaleValue(
+                        Number((event.target as HTMLInputElement).value)
+                      )
+                    }
+                  />
+                </div>
                 <div class="flex items-center [column-gap:20px]">
                   <label for="contrast">Contrast: </label>
                   <input
