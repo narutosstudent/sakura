@@ -1,6 +1,6 @@
 import type { FileInputEvent, ObjectPosition, ValueOf } from './types'
 
-import { createSignal, Match, Switch } from 'solid-js'
+import { createEffect, createSignal, Match, Switch } from 'solid-js'
 
 import { PositioningButtons } from './components/PositioningButtons'
 import { negativeRotationValues } from './constants'
@@ -14,6 +14,7 @@ export const App = () => {
   const [imageRotation, setImageRotation] = createSignal<
     ValueOf<typeof negativeRotationValues>
   >(negativeRotationValues.zero)
+  const [blurValue, setBlurValue] = createSignal(0)
 
   function onFileChange(event: FileInputEvent) {
     const newImageUrl = getImageUrl(event)
@@ -42,6 +43,10 @@ export const App = () => {
     }
   }
 
+  createEffect(() => {
+    console.log(blurValue())
+  })
+
   return (
     <main class="flex h-full w-full flex-col items-center bg-pink-100">
       <h1 class="mt-10 text-8xl font-medium text-gray-800">Sakura</h1>
@@ -52,6 +57,7 @@ export const App = () => {
               <div class="relative h-[300px] w-[600px] overflow-hidden">
                 <img
                   class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 ${imageObjectPosition()} ${imageRotation()}`}
+                  style={{ filter: `blur: (${blurValue()}px);` }}
                   src={imageUrl()}
                   alt=""
                 />
@@ -60,14 +66,32 @@ export const App = () => {
                   setImageObjectPosition={setImageObjectPosition}
                 />
               </div>
-              <button
-                class="mt-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gray-800 shadow-sm shadow-gray-700"
-                aria-label="Rotate image towards the left by 90 degrees."
-                type="button"
-                onClick={onRotationChange}
-              >
-                <Rotate />
-              </button>
+              <div class="mt-auto flex w-full items-center justify-evenly">
+                <button
+                  class="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-800 shadow-sm shadow-gray-700"
+                  aria-label="Rotate image towards the left by 90 degrees."
+                  type="button"
+                  onClick={onRotationChange}
+                >
+                  <Rotate />
+                </button>
+                <div class="flex items-center [column-gap:20px]">
+                  <label for="blur">Blur: </label>
+                  <input
+                    type="range"
+                    id="blur"
+                    min="0"
+                    max="100"
+                    value={blurValue()}
+                    onChange={(event) =>
+                      setBlurValue(
+                        Number((event.target as HTMLInputElement).value)
+                      )
+                    }
+                    step="1"
+                  />
+                </div>
+              </div>
             </div>
           </Match>
           <Match when={!imageUrl()}>
