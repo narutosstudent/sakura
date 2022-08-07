@@ -7,17 +7,70 @@ type FileInputEvent = Event & {
   target: HTMLInputElement
 }
 
+export type Direction = 'left' | 'right' | 'bottom' | 'top'
+
+type ObjectPosition =
+  | 'object-center'
+  | 'object-right'
+  | 'object-top'
+  | 'object-left'
+  | 'object-bottom'
+
+function getImageUrl(event: FileInputEvent) {
+  const file = event.target.files ? event.target.files[0] : null
+  if (!file) {
+    throw new Error('You must upload an image...')
+  }
+
+  return window.URL.createObjectURL(file)
+}
+
 export const App = () => {
   const [imageUrl, setImageUrl] = createSignal('src/levi.jpg')
+  const [imageObjectPosition, setImageObjectPosition] =
+    createSignal<ObjectPosition>('object-center')
 
-  const onFileChange = (event: FileInputEvent) => {
-    const file = event.target.files ? event.target.files[0] : null
-    if (!file) {
-      throw new Error('You must upload a image...')
+  function onFileChange(event: FileInputEvent) {
+    const newImageUrl = getImageUrl(event)
+    setImageUrl(newImageUrl)
+  }
+
+  function onButtonPositionClick(direction: Direction) {
+    if (direction === 'left') {
+      if (imageObjectPosition() === 'object-right') {
+        setImageObjectPosition('object-center')
+        return
+      }
+
+      setImageObjectPosition('object-left')
     }
 
-    const newImageUrl = window.URL.createObjectURL(file)
-    setImageUrl(newImageUrl)
+    if (direction === 'right') {
+      if (imageObjectPosition() === 'object-left') {
+        setImageObjectPosition('object-center')
+        return
+      }
+
+      setImageObjectPosition('object-right')
+    }
+
+    if (direction === 'top') {
+      if (imageObjectPosition() === 'object-bottom') {
+        setImageObjectPosition('object-center')
+        return
+      }
+
+      setImageObjectPosition('object-top')
+    }
+
+    if (direction === 'bottom') {
+      if (imageObjectPosition() === 'object-top') {
+        setImageObjectPosition('object-center')
+        return
+      }
+
+      setImageObjectPosition('object-bottom')
+    }
   }
 
   return (
@@ -29,7 +82,7 @@ export const App = () => {
             <div class="flex h-full w-full flex-col items-center">
               <div class="relative h-[300px] w-[600px]">
                 <img
-                  class="h-full w-full rounded-md object-cover object-center shadow-sm shadow-gray-800"
+                  class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 ${imageObjectPosition()}`}
                   src={imageUrl()}
                   alt=""
                 />
@@ -37,27 +90,38 @@ export const App = () => {
                   type="button"
                   name="left"
                   class="center-vertically postioning-buttons absolute left-2"
+                  aria-label="Move Image towards left"
+                  onClick={() => onButtonPositionClick('left')}
                 >
                   <Arrow direction="left" />
                 </button>
+
                 <button
                   type="button"
                   name="top"
                   class="center-horizontally postioning-buttons absolute top-2"
+                  aria-label="Move Image towards top"
+                  onClick={() => onButtonPositionClick('top')}
                 >
                   <Arrow direction="top" />
                 </button>
+
                 <button
                   type="button"
                   name="right"
                   class="center-vertically postioning-buttons absolute right-2"
+                  aria-label="Move Image towards right"
+                  onClick={() => onButtonPositionClick('right')}
                 >
                   <Arrow direction="right" />
                 </button>
+
                 <button
                   type="button"
                   name="bottom"
                   class="center-horizontally postioning-buttons bottom-2"
+                  aria-label="Move Image towards bottom"
+                  onClick={() => onButtonPositionClick('bottom')}
                 >
                   <Arrow direction="bottom" />
                 </button>

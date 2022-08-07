@@ -1,7 +1,6 @@
-export const Arrow = (props: {
-  class?: string
-  direction: 'left' | 'right' | 'bottom' | 'top'
-}) => {
+import type { Direction } from '../App'
+
+export const Arrow = (props: { class?: string; direction: Direction }) => {
   const rotation =
     props.direction === 'left'
       ? '-rotate-90'
