@@ -16,6 +16,7 @@ export const App = () => {
   >(negativeRotationValues.zero)
   const [contrastValue, setContrastValue] = createSignal(100)
   const [grayscaleValue, setGrayscaleValue] = createSignal(0)
+  const [saturationValue, setSaturationValue] = createSignal(100)
 
   function onFileChange(event: FileInputEvent) {
     const newImageUrl = getImageUrl(event)
@@ -53,7 +54,7 @@ export const App = () => {
             <div class="relative flex h-full w-full flex-col items-center">
               <div class="relative h-[300px] w-[600px] overflow-hidden">
                 <img
-                  class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 grayscale-[${grayscaleValue()}%] contrast-${contrastValue()} ${imageObjectPosition()} ${imageRotation()}`}
+                  class={`h-full w-full rounded-md object-cover shadow-sm shadow-gray-800 saturate-${saturationValue()} grayscale-[${grayscaleValue()}%] contrast-${contrastValue()} ${imageObjectPosition()} ${imageRotation()}`}
                   src={imageUrl()}
                   alt=""
                 />
@@ -85,6 +86,25 @@ export const App = () => {
                     value={grayscaleValue()}
                     onChange={(event) =>
                       setGrayscaleValue(
+                        Number((event.target as HTMLInputElement).value)
+                      )
+                    }
+                  />
+                </div>
+
+                <div class="flex items-center [column-gap:10px]">
+                  <label for="saturation" class="font-medium">
+                    Saturation: {saturationValue()}
+                  </label>
+                  <input
+                    type="range"
+                    id="saturation"
+                    min="0"
+                    max="200"
+                    step="50"
+                    value={saturationValue()}
+                    onChange={(event) =>
+                      setSaturationValue(
                         Number((event.target as HTMLInputElement).value)
                       )
                     }
