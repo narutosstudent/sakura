@@ -1,14 +1,9 @@
-import type {
-  Direction,
-  FileInputEvent,
-  ObjectPosition,
-  ValueOf,
-} from './types'
+import type { FileInputEvent, ObjectPosition, ValueOf } from './types'
 
 import { createSignal, Match, Switch } from 'solid-js'
 
+import { PositioningButtons } from './components/PositioningButtons'
 import { negativeRotationValues } from './constants'
-import { Arrow } from './icons/Arrow'
 import { Rotate } from './icons/Rotate'
 import { getImageUrl } from './utils'
 
@@ -25,44 +20,6 @@ export const App = () => {
     setImageUrl(newImageUrl)
   }
 
-  function handleImageRotation(direction: Direction) {
-    if (direction === 'left') {
-      if (imageObjectPosition() === 'object-right') {
-        setImageObjectPosition('object-center')
-        return
-      }
-
-      setImageObjectPosition('object-left')
-    }
-
-    if (direction === 'right') {
-      if (imageObjectPosition() === 'object-left') {
-        setImageObjectPosition('object-center')
-        return
-      }
-
-      setImageObjectPosition('object-right')
-    }
-
-    if (direction === 'top') {
-      if (imageObjectPosition() === 'object-bottom') {
-        setImageObjectPosition('object-center')
-        return
-      }
-
-      setImageObjectPosition('object-top')
-    }
-
-    if (direction === 'bottom') {
-      if (imageObjectPosition() === 'object-top') {
-        setImageObjectPosition('object-center')
-        return
-      }
-
-      setImageObjectPosition('object-bottom')
-    }
-  }
-
   return (
     <main class="flex h-full w-full flex-col items-center bg-pink-100">
       <h1 class="mt-10 text-8xl font-medium text-gray-800">Sakura</h1>
@@ -76,45 +33,10 @@ export const App = () => {
                   src={imageUrl()}
                   alt=""
                 />
-                <button
-                  type="button"
-                  name="left"
-                  class="center-vertically postioning-buttons absolute left-2"
-                  aria-label="Move Image towards left"
-                  onClick={() => handleImageRotation('left')}
-                >
-                  <Arrow direction="left" />
-                </button>
-
-                <button
-                  type="button"
-                  name="top"
-                  class="center-horizontally postioning-buttons absolute top-2"
-                  aria-label="Move Image towards top"
-                  onClick={() => handleImageRotation('top')}
-                >
-                  <Arrow direction="top" />
-                </button>
-
-                <button
-                  type="button"
-                  name="right"
-                  class="center-vertically postioning-buttons absolute right-2"
-                  aria-label="Move Image towards right"
-                  onClick={() => handleImageRotation('right')}
-                >
-                  <Arrow direction="right" />
-                </button>
-
-                <button
-                  type="button"
-                  name="bottom"
-                  class="center-horizontally postioning-buttons bottom-2"
-                  aria-label="Move Image towards bottom"
-                  onClick={() => handleImageRotation('bottom')}
-                >
-                  <Arrow direction="bottom" />
-                </button>
+                <PositioningButtons
+                  imageObjectPosition={imageObjectPosition()}
+                  setImageObjectPosition={setImageObjectPosition}
+                />
               </div>
               <button
                 class="mt-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gray-800 shadow-sm shadow-gray-700"
