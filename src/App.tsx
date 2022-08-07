@@ -62,7 +62,7 @@ export const App = () => {
                   alt=""
                 />
                 <PositioningButtons
-                  imageObjectPosition={imageObjectPosition()}
+                  imageObjectPosition={imageObjectPosition}
                   setImageObjectPosition={setImageObjectPosition}
                 />
               </div>
