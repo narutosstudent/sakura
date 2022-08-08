@@ -8,7 +8,7 @@ import { Rotate } from './icons/Rotate'
 import { getImageUrl } from './utils'
 
 export const App = () => {
-  const [imageUrl, setImageUrl] = createSignal('src/levi.jpg')
+  const [imageUrl, setImageUrl] = createSignal('')
   const [imageObjectPosition, setImageObjectPosition] =
     createSignal<ObjectPosition>('object-center')
   const [imageRotation, setImageRotation] = createSignal<
